@@ -1,10 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react'
-import videoSrc from './assets/hero-video.mp4'
 import SwitchButton from './nav bar/SwitchButton'
 
-const Hero = () => {
+const Hero = ({ videoUrl }) => {
   const [isPaused, setIsPaused] = useState(false)
+  const [videoLoading, setVideoLoading] = useState(true)
+  const [videoFailed, setVideoFailed] = useState(false) // Add this line
   const videoRef = useRef(null)
+
+  // Handle video loading
+  const handleVideoLoad = () => {
+    setVideoLoading(false)
+  }
+
+  const handleVideoError = () => {
+    console.error('Hero video failed to load')
+    setVideoLoading(false)
+    setVideoFailed(true) // Add this line
+  }
 
   // Whenever isPaused changes, pause or play the video
   useEffect(() => {
@@ -22,17 +34,37 @@ const Hero = () => {
   }
 
   return (
-    <section className="hero">
-      <video ref={videoRef} className="hero-video" autoPlay loop muted playsInline>
-        <source src={`https://res.cloudinary.com/travel-adam/video/upload/v1749241532/generic%20placeholders/hero-video_emdpwq.mp4`} type="video/mp4" />
+    <section className='hero'>
+      {/* Show loader while video is loading OR if video failed */}
+      {(videoLoading || videoFailed) && (
+        <div className='hero-video-loader'>
+          <img
+            src='/beach.jpg'
+            alt='Loading video...'
+            className='hero-loader-image'
+          />
+        </div>
+      )}
+
+      <video
+        ref={videoRef}
+        className={`hero-video ${videoLoading ? 'video-loading' : ''}`}
+        autoPlay
+        loop
+        muted
+        playsInline
+        onLoadedData={handleVideoLoad}
+        onError={handleVideoError}
+      >
+        <source src={videoUrl} type='video/mp4' />
         Your browser does not support the video tag.
       </video>
 
-      <div className="hero-text-content-div">
+      <div className='hero-text-content-div'>
         <h3>travel with the best</h3>
       </div>
 
-      <div className="video-control-div">
+      <div className='video-control-div'>
         <SwitchButton handleToggle={handleToggle} />
       </div>
     </section>

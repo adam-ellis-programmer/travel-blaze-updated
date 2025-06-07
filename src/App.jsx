@@ -11,12 +11,15 @@ import Loader from './Loader'
 function App() {
   const [loading, setloading] = useState(true)
 
+  // Define video URL in one place
+  const videoUrl = `https://res.cloudinary.com/travel-adam/video/upload/v1749241532/generic%20placeholders/hero-video_emdpwq.mp4`
+
   useEffect(() => {
     const video = document.createElement('video')
     let timeoutId
 
     const preloadVideo = () => {
-      video.src = `https://res.cloudinary.com/travel-adam/video/upload/v1749241532/generic%20placeholders/hero-video_emdpwq.mp4`
+      video.src = videoUrl // Use the same URL
 
       video.onloadeddata = () => {
         setloading(false)
@@ -29,16 +32,14 @@ function App() {
         clearTimeout(timeoutId)
       }
 
-      // ADD THIS: Fallback timeout for mobile
       timeoutId = setTimeout(() => {
         console.log('Video preload timeout - removing loader anyway')
         setloading(false)
-      }, 2000) // Remove loader after 3 seconds regardless
+      }, 2000)
     }
 
     preloadVideo()
 
-    // Cleanup
     return () => {
       clearTimeout(timeoutId)
     }
@@ -49,7 +50,7 @@ function App() {
   return (
     <>
       <Nav />
-      <Hero />
+      <Hero videoUrl={videoUrl} /> {/* Pass URL as prop */}
       <Countries />
       <Reviews />
       <Footer />

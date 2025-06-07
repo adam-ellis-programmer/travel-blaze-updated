@@ -9,6 +9,7 @@ const MobileSideBar = () => {
   const activityData = data[1]
 
   // Prevent body scroll when sidebar is open
+  // target the body element
   useEffect(() => {
     if (isSidebarOpen) {
       document.body.classList.add('sidebar-open')
@@ -16,7 +17,7 @@ const MobileSideBar = () => {
       document.body.classList.remove('sidebar-open')
     }
 
-    // Cleanup when component unmounts
+    // Cleanup on component unmount
     return () => {
       document.body.classList.remove('sidebar-open')
     }

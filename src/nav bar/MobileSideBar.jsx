@@ -8,26 +8,43 @@ const MobileSideBar = () => {
   const destinationData = data[0]
   const activityData = data[1]
 
+  // Prevent body scroll when sidebar is open
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.classList.add('sidebar-open')
+    } else {
+      document.body.classList.remove('sidebar-open')
+    }
+
+    // Cleanup when component unmounts
+    return () => {
+      document.body.classList.remove('sidebar-open')
+    }
+  }, [isSidebarOpen])
+
   const handleClose = () => {
     setIsSidebarOpen(false)
   }
-  //  nested loops the same as the blog project
-  return (
-    <aside className={`${isSidebarOpen ? 'mobile-nav show-nav' : 'mobile-nav'} `}>
-      <div className="mobile-nav-container">
-        <AiFillCloseCircle onClick={handleClose} className="close-nav-icon" />
 
-        <div className="mobile-links-container">
+  return (
+    <aside
+      className={`mobile-nav-aside ${
+        isSidebarOpen ? 'mobile-nav show-nav' : 'mobile-nav'
+      }`}
+    >
+      {/* Rest of your component stays the same */}
+      <div className='mobile-nav-container'>
+        <AiFillCloseCircle onClick={handleClose} className='close-nav-icon' />
+
+        <div className='mobile-links-container'>
           <h4>{destinationData.page}</h4>
           <ul>
-            {/* nested maps */}
             {destinationData.links.map((item) => {
-              const activitiesArray = item.subData // subData is an array with multiple objects
+              const activitiesArray = item.subData
               return (
-                <li key={item.id} className="mobile-nav-li">
-                  <span className="mobile-heading-span">{item.label}</span>
-                  {/* NESTED LOOP */}
-                  <ul className="mobile-nav-sub-ul">
+                <li key={item.id} className='mobile-nav-li'>
+                  <span className='mobile-heading-span'>{item.label}</span>
+                  <ul className='mobile-nav-sub-ul'>
                     {activitiesArray.map((activityItem) => (
                       <li key={activityItem.id}>{activityItem.activity}</li>
                     ))}
@@ -38,18 +55,15 @@ const MobileSideBar = () => {
           </ul>
         </div>
 
-        <div className="mobile-links-container">
+        <div className='mobile-links-container'>
           <h4>{activityData.page}</h4>
           <ul>
             {activityData.links.map((item) => {
               const activitiesArray = item.subData
-              // console.log(activitiesArray)
               return (
-                <li key={item.id} className="mobile-nav-li">
+                <li key={item.id} className='mobile-nav-li'>
                   {item.label}
-
-                  {/* NESTED LOOP  */}
-                  <ul className="mobile-nav-sub-ul">
+                  <ul className='mobile-nav-sub-ul'>
                     {activitiesArray.map((item) => {
                       return <li key={item.id}>{item.activity}</li>
                     })}

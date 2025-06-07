@@ -51,7 +51,7 @@ const travelReviews = [
   },
   {
     id: 3,
-    name: 'Lisa Lee',
+    name: 'Lisa Jones',
     reviewText:
       'This travel company offered great deals on flights and accommodations for my family vacation. The booking process was simple and hassle-free. We had a wonderful time, thanks to their expertise!',
     starRating: 4,

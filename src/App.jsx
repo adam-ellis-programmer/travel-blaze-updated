@@ -4,8 +4,33 @@ import Nav from './nav bar/Nav'
 import { BrowserRouter as Router, Routes, Route } from 'react-router'
 import Reviews from './Reviews'
 import Footer from './Footer'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import Loader from './Loader'
 
 function App() {
+  const [loading, setloading] = useState(true)
+
+  useEffect(() => {
+    const video = document.createElement('video')
+    const preloadVideo = () => {
+      video.src = `https://res.cloudinary.com/travel-adam/video/upload/v1749241532/generic%20placeholders/hero-video_emdpwq.mp4`
+
+      video.onloadeddata = () => {
+        setloading(false)
+      }
+
+      video.onerror = () => {
+        console.error('Video failed to load')
+        setloading(false) // Still remove loader even if video fails
+      }
+    }
+
+    preloadVideo()
+  }, [])
+
+  if (loading) return <Loader />
+
   return (
     <>
       <Nav />
